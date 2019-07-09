@@ -51,8 +51,7 @@
         "laravel": {
             "providers": [
                 "LaravelCreative\\Draftable\\DraftableServiceProvider"
-            ],
-          
+            ]
         }
     }
 }
