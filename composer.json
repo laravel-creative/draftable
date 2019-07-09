@@ -9,7 +9,7 @@
         "wordpress",
         "drafts",
         "archive",
-        "restore models",
+        "restore models"
     ],
     "homepage": "https://github.com/laravel-creative/draftable",
     "license": "MIT",
