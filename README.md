@@ -106,7 +106,7 @@ If you discover any security related issues, please email mustafakhaled.dev@gmai
 
 ## Credits
 
-- [Mustafa Khaled](https://github.com/laravel-creative)
+- [Mustafa Khaled](https://github.com/mustafakhaleddev)
 - [All Contributors](../../contributors)
 
 ## License
