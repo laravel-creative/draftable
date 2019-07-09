@@ -1,0 +1,58 @@
+{
+    "name": "laravel-creative/draftable",
+    "description": "Laravel Drafts tool for models",
+    "keywords": [
+        "laravel-creative",
+        "draftable",
+        "laravel packages",
+        "laravel wordpress",
+        "wordpress",
+        "drafts",
+        "archive",
+        "restore models",
+    ],
+    "homepage": "https://github.com/laravel-creative/draftable",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mustafa Khaled",
+            "email": "mustafakhaled.dev@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "5.8.*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "3.8.*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelCreative\\Draftable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelCreative\\Draftable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelCreative\\Draftable\\DraftableServiceProvider"
+            ],
+          
+        }
+    }
+}
