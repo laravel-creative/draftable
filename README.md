@@ -1,8 +1,6 @@
 # Laravel Draftable Models
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-creative/draftable.svg?style=flat-square)](https://packagist.org/packages/laravel-creative/draftable)
-[![Build Status](https://img.shields.io/travis/laravel-creative/draftable/master.svg?style=flat-square)](https://travis-ci.org/laravel-creative/draftable)
-[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-creative/draftable.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-creative/draftable)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-creative/draftable.svg?style=flat-square)](https://packagist.org/packages/laravel-creative/draftable)
 
 Bring the power of Wordpress drafts posts to your Laravel application , with simple functions and steps 
