@@ -108,7 +108,7 @@ class Draftable extends Model
     {
         try {
             $new_class = new $this->draftable_model();
-            $new_class->forceFill($this->data);
+            $new_class->fill($this->data);
             $new_class->published_at = $this->published_at;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
