@@ -3,6 +3,7 @@
 namespace LaravelCreative\Draftable;
 
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ class Draftable extends Model
     protected $casts = ['draftable_data' => 'array'];
 
 
-    protected $fillable = ['draftable_id', 'draftable_data', 'draftable_model', 'published_at'];
+    protected $fillable = ['draftable_id', 'draftable_data', 'draftable_model', 'published_at','user_id'];
 
 
     /**
@@ -58,9 +59,7 @@ class Draftable extends Model
     public function publish()
     {
         try {
-            $new_class = new $this->draftable_model();
-            $new_class->forceFill($this->data);
-            $new_class->save();
+            $new_class = $this->draftable_model::create($this->data);
             $this->published_at = Carbon::now();
             $this->draftable_id = $new_class->id;
             $this->save();
@@ -81,8 +80,7 @@ class Draftable extends Model
         try {
             $new_class = $this->draftable_model::where('id', $this->draftable_id)->first();
             if (empty($new_class)) throw new \Exception('Cant Find Resource for ' . $this->draftable_model . ' with id ' . $this->draftable_id);
-            $new_class->forceFill($this->data);
-            $new_class->save();
+            $new_class->update($this->data);
             $this->published_at = Carbon::now();
             $this->draftable_id = $new_class->id;
             $this->save();
@@ -110,5 +108,14 @@ class Draftable extends Model
         return $new_class;
     }
 
+
+    /**
+     * user relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 }

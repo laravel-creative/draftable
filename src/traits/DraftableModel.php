@@ -12,6 +12,8 @@ trait DraftableModel
 {
 
 
+    private static $userID;
+
     /**
      * get All Drafts Collection for model
      * @param bool $unfillable
@@ -19,6 +21,7 @@ trait DraftableModel
      */
     public static function getAllDrafts($unfillable = false)
     {
+
         $draftsEnteries = static::DraftsQuery()->get();
         return static::getDraftsCollection($draftsEnteries, $unfillable);
     }
@@ -67,7 +70,7 @@ trait DraftableModel
     public function saveAsDraft()
     {
         $draftableArray = $this->toArray();
-        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => null];
+        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => null,'user_id'=>static::$userID];
         try {
             Draftable::create($draftableEnteryArray);
         } catch (\Exception $e) {
@@ -86,7 +89,7 @@ trait DraftableModel
         $this->save();
         $draftableArray = $this->toArray();
         unset($draftableArray['id']);
-        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => Carbon::now()];
+        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => Carbon::now(),'user_id'=>static::$userID];
         try {
             Draftable::create($draftableEnteryArray);
         } catch (\Exception $e) {
@@ -123,7 +126,10 @@ trait DraftableModel
      */
     private static function DraftsQuery()
     {
-        return Draftable::where('draftable_model', static::class);
+        $userQuery=[];
+        if(Static::$userID!=null)$userQuery['user_id']=Static::$userID;
+
+        return Draftable::where('draftable_model', static::class)->where($userQuery);
     }
 
 
@@ -146,6 +152,32 @@ trait DraftableModel
      */
     public function drafts()
     {
-        return $this->morphMany(Draftable::class, 'draftable','draftable_model','draftable_id');
+        return $this->morphMany(Draftable::class, 'draftable', 'draftable_model', 'draftable_id');
     }
+
+
+    /**
+     * get draft by id
+     * @param $id
+     * @return mixed
+     */
+    public function getDraft($id)
+    {
+        $draftsEnteries = static::DraftsQuery()->where('id', $id)->first();
+        return $draftsEnteries;
+    }
+
+
+    /**
+     * Set user for draft ( the creator of draft )
+     * @param $user
+     * @return DraftableModel
+     */
+    public static  function setUser($user)
+    {
+        static::$userID = $user->id;
+        return new static();
+    }
+
+
 }

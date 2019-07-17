@@ -36,6 +36,17 @@ in case you want to save it in its own table but also you need to make a draft o
 ```php
 $article->saveWithDraft();
 ```
+
+#### Assign the draft for user
+to assign the draft for specific user
+```php
+$article::setUser($user);
+```
+
+To get all drafts for specific user
+```php
+ $draftsArticles=Article::setUser($user)->getAllDrafts();
+```
 #### Get Drafts for model
 To get all drafts for the model use ```php Model::getAllDrafts() ```
 ```php

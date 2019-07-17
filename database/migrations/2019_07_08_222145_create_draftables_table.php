@@ -18,6 +18,7 @@ class CreateDraftablesTable extends Migration
             $table->longText('draftable_data');
             $table->string('draftable_model');
             $table->integer('draftable_id')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
