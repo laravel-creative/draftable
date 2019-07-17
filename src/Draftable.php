@@ -59,7 +59,15 @@ class Draftable extends Model
     public function publish()
     {
         try {
-            $new_class = $this->draftable_model::create($this->data);
+            $new_class = $this->draftable_model::where('id', $this->draftable_id)->first();
+            if (empty($new_class))
+            {
+                $new_class = $this->draftable_model::create($this->data);
+            }else
+            {
+                $new_class->update($this->data);
+            }
+
             $this->published_at = Carbon::now();
             $this->draftable_id = $new_class->id;
             $this->save();
