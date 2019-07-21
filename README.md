@@ -47,6 +47,17 @@ To get all drafts for specific user
 ```php
  $draftsArticles=Article::setUser($user)->getAllDrafts();
 ```
+
+#### Save data with the draft 
+you can save data with the draft like (publish_date) or anything else.
+```php
+$article->saveAsDraft();
+$article->draft->setData('publish_date',Carbon::now()->addDay());
+//you can get the data with this method
+$article->draft->getData('publish_date');
+
+```
+
 #### Get Drafts for model
 To get all drafts for the model use ```php Model::getAllDrafts() ```
 ```php

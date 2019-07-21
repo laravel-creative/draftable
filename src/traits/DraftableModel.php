@@ -70,9 +70,10 @@ trait DraftableModel
     public function saveAsDraft()
     {
         $draftableArray = $this->toArray();
-        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => null,'user_id'=>static::$userID];
+        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => null,'user_id'=>static::$userID,'data'=>[]];
         try {
-            Draftable::create($draftableEnteryArray);
+            $draft=Draftable::create($draftableEnteryArray);
+            $this->draft=$draft;
         } catch (\Exception $e) {
             throw new  Exception($e->getMessage());
         }
@@ -89,9 +90,10 @@ trait DraftableModel
         $this->save();
         $draftableArray = $this->toArray();
         unset($draftableArray['id']);
-        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => Carbon::now(),'user_id'=>static::$userID];
+        $draftableEnteryArray = ['draftable_id' => $this->id, 'draftable_data' => $draftableArray, 'draftable_model' => static::class, 'published_at' => Carbon::now(),'user_id'=>static::$userID,'data'=>[]];
         try {
-            Draftable::create($draftableEnteryArray);
+            $draft=Draftable::create($draftableEnteryArray);
+            $this->draft=$draft;
         } catch (\Exception $e) {
             throw new  Exception($e->getMessage());
         }
@@ -111,7 +113,7 @@ trait DraftableModel
         $collection = new Collection();
         foreach ($draftsEnteries as $entery) {
             $new_class = new static();
-            $new_class->forceFill($entery->data);
+            $new_class->forceFill($entery->draftable_data);
             $new_class->published_at = $entery->published_at;
             $new_class->draft = $entery;
             $collection->push($new_class);

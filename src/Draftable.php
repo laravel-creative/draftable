@@ -14,20 +14,10 @@ class Draftable extends Model
 
     protected $dates = ['created_at', 'updated_at', 'published_at'];
 
-    protected $casts = ['draftable_data' => 'array'];
+    protected $casts = ['draftable_data' => 'array', 'data' => 'array'];
 
 
-    protected $fillable = ['draftable_id', 'draftable_data', 'draftable_model', 'published_at','user_id'];
-
-
-    /**
-     * Return Data attribute for entry
-     * @return mixed
-     */
-    public function getDataAttribute()
-    {
-        return $this->draftable_data;
-    }
+    protected $fillable = ['draftable_id', 'draftable_data', 'draftable_model', 'published_at', 'user_id', 'data'];
 
 
     /**
@@ -59,15 +49,7 @@ class Draftable extends Model
     public function publish()
     {
         try {
-            $new_class = $this->draftable_model::where('id', $this->draftable_id)->first();
-            if (empty($new_class))
-            {
-                $new_class = $this->draftable_model::create($this->data);
-            }else
-            {
-                $new_class->update($this->data);
-            }
-
+            $new_class = $this->draftable_model::create($this->draftable_data);
             $this->published_at = Carbon::now();
             $this->draftable_id = $new_class->id;
             $this->save();
@@ -88,7 +70,7 @@ class Draftable extends Model
         try {
             $new_class = $this->draftable_model::where('id', $this->draftable_id)->first();
             if (empty($new_class)) throw new \Exception('Cant Find Resource for ' . $this->draftable_model . ' with id ' . $this->draftable_id);
-            $new_class->update($this->data);
+            $new_class->update($this->draftable_data);
             $this->published_at = Carbon::now();
             $this->draftable_id = $new_class->id;
             $this->save();
@@ -108,7 +90,7 @@ class Draftable extends Model
     {
         try {
             $new_class = new $this->draftable_model();
-            $new_class->fill($this->data);
+            $new_class->forceFill($this->draftable_data);
             $new_class->published_at = $this->published_at;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -126,4 +108,28 @@ class Draftable extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+
+    /**
+     * Set Additional data for the draft
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setData($key, $value)
+    {
+        $data = $this->data;
+        $data[$key] = $value;
+        $this->data = $data;
+        $this->save();
+        return $this;
+    }
+
+
+    /**
+     * get data of draft
+     */
+    public function getData($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
+    }
 }
